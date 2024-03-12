@@ -1,212 +1,16 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import plotly
 import plotly.express as px
 import matplotlib.pyplot as plt
-
 
 
 # Change your path to the file  
 df = pd.read_csv('sdg_index_2000-2022.csv')
 
 
-
-# Adding continent column
-country_to_continent = {
-    'Afghanistan': 'Asia',
-    'Albania': 'Europe',
-    'Algeria': 'Africa',
-    'Angola': 'Africa',
-    'Argentina': 'South America',
-    'Armenia': 'Asia',
-    'Australia': 'Oceania',
-    'Austria': 'Europe',
-    'Azerbaijan': 'Asia',
-    'Bahamas, The': 'North America',
-    'Bahrain': 'Asia',
-    'Bangladesh': 'Asia',
-    'Barbados': 'North America',
-    'Belarus': 'Europe',
-    'Belgium': 'Europe',
-    'Belize': 'North America',
-    'Benin': 'Africa',
-    'Bhutan': 'Asia',
-    'Bolivia': 'South America',
-    'Bosnia and Herzegovina': 'Europe',
-    'Botswana': 'Africa',
-    'Brazil': 'South America',
-    'Brunei Darussalam': 'Asia',
-    'Bulgaria': 'Europe',
-    'Burkina Faso': 'Africa',
-    'Burundi': 'Africa',
-    'Cabo Verde': 'Africa',
-    'Cambodia': 'Asia',
-    'Cameroon': 'Africa',
-    'Canada': 'North America',
-    'Central African Republic': 'Africa',
-    'Chad': 'Africa',
-    'Chile': 'South America',
-    'China': 'Asia',
-    'Colombia': 'South America',
-    'Comoros': 'Africa',
-    'Congo, Dem. Rep.': 'Africa',
-    'Congo, Rep.': 'Africa',
-    'Costa Rica': 'North America',
-    "Cote d'Ivoire": 'Africa',
-    'Croatia': 'Europe',
-    'Cuba': 'North America',
-    'Cyprus': 'Asia',
-    'Czechia': 'Europe',
-    'Denmark': 'Europe',
-    'Djibouti': 'Africa',
-    'Dominican Republic': 'North America',
-    'East and South Asia': 'Asia',
-    'Eastern Europe and Central Asia': 'Europe',
-    'Ecuador': 'South America',
-    'Egypt, Arab Rep.': 'Africa',
-    'El Salvador': 'North America',
-    'Estonia': 'Europe',
-    'Eswatini': 'Africa',
-    'Ethiopia': 'Africa',
-    'Fiji': 'Oceania',
-    'Finland': 'Europe',
-    'France': 'Europe',
-    'Gabon': 'Africa',
-    'Gambia, The': 'Africa',
-    'Georgia': 'Asia',
-    'Germany': 'Europe',
-    'Ghana': 'Africa',
-    'Greece': 'Europe',
-    'Guatemala': 'North America',
-    'Guinea': 'Africa',
-    'Guyana': 'South America',
-    'Haiti': 'North America',
-    'High-income Countries': 'Unknown',
-    'Honduras': 'North America',
-    'Hungary': 'Europe',
-    'Iceland': 'Europe',
-    'India': 'Asia',
-    'Indonesia': 'Asia',
-    'Iran, Islamic Rep.': 'Asia',
-    'Iraq': 'Asia',
-    'Ireland': 'Europe',
-    'Israel': 'Asia',
-    'Italy': 'Europe',
-    'Jamaica': 'North America',
-    'Japan': 'Asia',
-    'Jordan': 'Asia',
-    'Kazakhstan': 'Asia',
-    'Kenya': 'Africa',
-    'Korea, Rep.': 'Asia',
-    'Kuwait': 'Asia',
-    'Kyrgyz Republic': 'Asia',
-    'Lao PDR': 'Asia',
-    'Latin America and the Caribbean': 'South America',
-    'Latvia': 'Europe',
-    'Lebanon': 'Asia',
-    'Lesotho': 'Africa',
-    'Liberia': 'Africa',
-    'Lithuania': 'Europe',
-    'Lower & Lower-middle Income': 'Unknown',
-    'Lower-middle-income Countries': 'Unknown',
-    'Low-income Countries': 'Unknown',
-    'Luxembourg': 'Europe',
-    'Madagascar': 'Africa',
-    'Malawi': 'Africa',
-    'Malaysia': 'Asia',
-    'Maldives': 'Asia',
-    'Mali': 'Africa',
-    'Malta': 'Europe',
-    'Mauritania': 'Africa',
-    'Mauritius': 'Africa',
-    'Mexico': 'North America',
-    'Middle East and North Africa': 'Asia',
-    'Moldova': 'Europe',
-    'Mongolia': 'Asia',
-    'Montenegro': 'Europe',
-    'Morocco': 'Africa',
-    'Mozambique': 'Africa',
-    'Myanmar': 'Asia',
-    'Namibia': 'Africa',
-    'Nepal': 'Asia',
-    'Netherlands': 'Europe',
-    'New Zealand': 'Oceania',
-    'Nicaragua': 'North America',
-    'Niger': 'Africa',
-    'Nigeria': 'Africa',
-    'North Macedonia': 'Europe',
-    'Norway': 'Europe',
-    'Oceania': 'Oceania',
-    'OECD members': 'Unknown',
-    'Oman': 'Asia',
-    'Pakistan': 'Asia',
-    'Panama': 'North America',
-    'Papua New Guinea': 'Oceania',
-    'Paraguay': 'South America',
-    'Peru': 'South America',
-    'Philippines': 'Asia',
-    'Poland': 'Europe',
-    'Portugal': 'Europe',
-    'Qatar': 'Asia',
-    'Romania': 'Europe',
-    'Russian Federation': 'Europe',
-    'Rwanda': 'Africa',
-    'Sao Tome and Principe': 'Africa',
-    'Saudi Arabia': 'Asia',
-    'Senegal': 'Africa',
-    'Serbia': 'Europe',
-    'Sierra Leone': 'Africa',
-    'Singapore': 'Asia',
-    'Slovak Republic': 'Europe',
-    'Slovenia': 'Europe',
-    'Small Island Developing States': 'Unknown',
-    'Somalia': 'Africa',
-    'South Africa': 'Africa',
-    'South Sudan': 'Africa',
-    'Spain': 'Europe',
-    'Sri Lanka': 'Asia',
-    'Sub-Saharan Africa': 'Africa',
-    'Sudan': 'Africa',
-    'Suriname': 'South America',
-    'Sweden': 'Europe',
-    'Switzerland': 'Europe',
-    'Syrian Arab Republic': 'Asia',
-    'Tajikistan': 'Asia',
-    'Tanzania': 'Africa',
-    'Thailand': 'Asia',
-    'Togo': 'Africa',
-    'Trinidad and Tobago': 'North America',
-    'Tunisia': 'Africa',
-    'Türkiye': 'Asia',
-    'Turkmenistan': 'Asia',
-    'Uganda': 'Africa',
-    'Ukraine': 'Europe',
-    'United Arab Emirates': 'Asia',
-    'United Kingdom': 'Europe',
-    'United States': 'North America',
-    'Upper-middle-income Countries': 'Unknown',
-    'Uruguay': 'South America',
-    'Uzbekistan': 'Asia',
-    'Venezuela, RB': 'South America',
-    'Vietnam': 'Asia',
-    'World': 'Unknown',
-    'Yemen, Rep.': 'Asia',
-    'Zambia': 'Africa',
-    'Zimbabwe': 'Africa'
-}
-def map_country_to_continent(country):
-    return country_to_continent.get(country, 'Unknown')
-
-# Apply the mapping to create a new 'Continent' column
-df['continent'] = df['country'].apply(map_country_to_continent)
-
-
-
-
-
 # Start visualization
-tab1, tab2, tab3, tab4 = st.tabs(['SDGs', 'France', 'Europe', 'Wordldwide'])
+tab1, tab2, tab3 = st.tabs(['SDGs', 'France an Ranking', 'Wordldwide'])
 with tab1:
     st.markdown("<h2>Sustainable Development Report 2023</h2>", unsafe_allow_html=True)
     st.write(
@@ -267,16 +71,6 @@ with tab2:
     st.plotly_chart(fig)
 
 with tab3:
-    st.header('Overall SDG scores of European countries over time')
-    selected_year2 = st.selectbox("All the SDGs scores for Europe over the years compared to France", (2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022), index=None)
-    df_europe = df.loc[df['continent'] == 'Europe']
-    fig3 = px.bar(df_europe.loc[df_europe['year'] == selected_year2], x='country', y='sdg_index_score')
-    df_selected_year = df_europe[df_europe['year'] == selected_year2]
-    fig3.update_traces(marker_color=['red' if country == 'France' else 'blue' for country in df_selected_year['country']])
-    st.plotly_chart(fig3)
-
-
-with tab4:
      st.header('Overall SDG score map of all continents')
      fig2= px.scatter_geo(df,locations='country',locationmode='country names',color='sdg_index_score',
          hover_name='country',
